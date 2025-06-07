@@ -22,7 +22,8 @@ import {
   ArrowRight,
   Table,
   MessageSquare,
-  X
+  X,
+  AlertCircle
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useData } from "@/lib/DataContext";
@@ -57,6 +58,9 @@ import {
 } from 'recharts';
 import { exportDashboardReport, exportAsPDF } from "@/lib/export-utils";
 import { toast } from "@/components/ui/use-toast";
+import { performStatisticalAnalysis, StatisticalAnalysis } from "../lib/statistics";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { StatisticalAnalysisCard } from "../components/StatisticalAnalysisCard";
 
 interface MetricCardProps {
   title: string;
@@ -171,6 +175,15 @@ export default function Dashboard() {
     yAxis: ''
   });
   const dashboardRef = useRef<HTMLDivElement>(null);
+  const [selectedAnalysis, setSelectedAnalysis] = useState<{
+    numericColumn: string;
+    groupColumn: string;
+    analysis: StatisticalAnalysis | null;
+  }>({
+    numericColumn: '',
+    groupColumn: '',
+    analysis: null
+  });
 
   useEffect(() => {
     if (currentDataset) {
@@ -239,56 +252,55 @@ export default function Dashboard() {
   };
 
   const renderChart = (chart: ChartConfig) => {
-    const commonProps = {
-      width: "100%",
-      height: 300,
-      data: chart.data,
-      margin: { top: 5, right: 30, left: 20, bottom: 5 }
-    };
-
     switch (chart.type) {
       case 'bar':
         return (
-          <RechartsBarChart {...commonProps}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey={chart.xAxis} />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey={chart.yAxis} fill="#8884d8" />
-          </RechartsBarChart>
+          <ResponsiveContainer width="100%" height={300}>
+            <RechartsBarChart data={chart.data as DataItem[]}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey={chart.xAxis} />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey={chart.yAxis} fill="#8884d8" />
+            </RechartsBarChart>
+          </ResponsiveContainer>
         );
       case 'line':
         return (
-          <LineChart {...commonProps}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey={chart.xAxis} />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey={chart.yAxis} stroke="#8884d8" />
-          </LineChart>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={chart.data as DataItem[]}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey={chart.xAxis} />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey={chart.yAxis} stroke="#8884d8" />
+            </LineChart>
+          </ResponsiveContainer>
         );
       case 'pie':
         return (
-          <PieChart {...commonProps}>
-            <Pie
-              data={chart.data}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-              outerRadius={100}
-              fill="#8884d8"
-              dataKey="value"
-            >
-              {chart.data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={chart.data as PieDataItem[]}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                outerRadius={100}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {(chart.data as PieDataItem[]).map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
         );
       default:
         return null;
@@ -336,6 +348,48 @@ export default function Dashboard() {
       toast({
         title: "Export Failed",
         description: "Failed to export the dashboard. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleAnalyzeColumns = (numericCol: string, groupCol: string) => {
+    if (!currentDataset?.preview) return;
+
+    // Extract and validate numeric data
+    const numericData = currentDataset.preview
+      .map(row => {
+        const value = Number(row[numericCol]);
+        return isNaN(value) ? null : value;
+      })
+      .filter((value): value is number => value !== null);
+
+    // Extract corresponding group data (only for valid numeric values)
+    const groupData = currentDataset.preview
+      .map(row => String(row[groupCol]))
+      .slice(0, numericData.length);
+
+    if (numericData.length < 2) {
+      toast({
+        title: "Invalid Data",
+        description: "Not enough valid numeric data points for analysis.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const analysis = performStatisticalAnalysis(numericData, groupData);
+      setSelectedAnalysis({
+        numericColumn: numericCol,
+        groupColumn: groupCol,
+        analysis
+      });
+    } catch (error) {
+      console.error('Error performing statistical analysis:', error);
+      toast({
+        title: "Analysis Failed",
+        description: "Failed to perform statistical analysis. Please check your data.",
         variant: "destructive",
       });
     }
@@ -701,6 +755,72 @@ export default function Dashboard() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Statistical Analysis */}
+      {currentDataset && (
+        <Card className="animate-fade-in">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Activity className="w-5 h-5 text-primary" />
+              Statistical Analysis
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-4">
+              <div className="space-y-2 flex-1">
+                <label className="text-sm font-medium">Numeric Column</label>
+                <Select
+                  value={selectedAnalysis.numericColumn}
+                  onValueChange={(value) => {
+                    if (selectedAnalysis.groupColumn) {
+                      handleAnalyzeColumns(value, selectedAnalysis.groupColumn);
+                    }
+                    setSelectedAnalysis(prev => ({ ...prev, numericColumn: value }));
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select numeric column" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currentDataset.summary.numericColumns.map(column => (
+                      <SelectItem key={column} value={column}>{column}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2 flex-1">
+                <label className="text-sm font-medium">Group Column</label>
+                <Select
+                  value={selectedAnalysis.groupColumn}
+                  onValueChange={(value) => {
+                    if (selectedAnalysis.numericColumn) {
+                      handleAnalyzeColumns(selectedAnalysis.numericColumn, value);
+                    }
+                    setSelectedAnalysis(prev => ({ ...prev, groupColumn: value }));
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select group column" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currentDataset.summary.categoricalColumns.map(column => (
+                      <SelectItem key={column} value={column}>{column}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {selectedAnalysis.analysis && (
+              <StatisticalAnalysisCard
+                analysis={selectedAnalysis.analysis}
+                numericColumn={selectedAnalysis.numericColumn}
+                groupColumn={selectedAnalysis.groupColumn}
+              />
+            )}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
