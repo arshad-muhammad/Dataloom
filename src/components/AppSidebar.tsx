@@ -1,5 +1,4 @@
-
-import { Upload, BarChart, MessageSquare, Settings, Home, User } from "lucide-react";
+import { Upload, BarChart, MessageSquare, User, Home } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -43,11 +42,6 @@ const bottomItems = [
     url: "/profile",
     icon: User,
   },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
 ];
 
 export function AppSidebar() {
@@ -59,9 +53,9 @@ export function AppSidebar() {
       <SidebarHeader className="p-4">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-            <span className="text-white font-bold text-sm">J</span>
+            <span className="text-white font-bold text-sm">D</span>
           </div>
-          <span className="font-semibold text-sidebar-foreground">Julius AI</span>
+          <span className="font-semibold text-sidebar-foreground">DataLoom</span>
         </div>
       </SidebarHeader>
       

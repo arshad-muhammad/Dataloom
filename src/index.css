@@ -1,113 +1,165 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Julius.AI inspired design system */
+/* Modern Design System with Enhanced Color Palette */
 
 @layer base {
   :root {
-    --background: 255 255 255;
-    --foreground: 15 23 42;
+    --background: 240 25% 98%;
+    --foreground: 240 10% 4%;
 
-    --card: 255 255 255;
-    --card-foreground: 15 23 42;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 4%;
 
-    --popover: 255 255 255;
-    --popover-foreground: 15 23 42;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
 
-    --primary: 99 102 241;
-    --primary-foreground: 255 255 255;
+    --primary: 235 94% 66%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 248 250 252;
-    --secondary-foreground: 51 65 85;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 10% 4%;
 
-    --muted: 248 250 252;
-    --muted-foreground: 100 116 139;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
 
-    --accent: 129 140 248;
-    --accent-foreground: 255 255 255;
+    --accent: 235 100% 70%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 239 68 68;
-    --destructive-foreground: 255 255 255;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 226 232 240;
-    --input: 226 232 240;
-    --ring: 99 102 241;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 235 94% 66%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 255 255 255;
-    --sidebar-foreground: 15 23 42;
-    --sidebar-primary: 99 102 241;
-    --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 248 250 252;
-    --sidebar-accent-foreground: 51 65 85;
-    --sidebar-border: 226 232 240;
-    --sidebar-ring: 99 102 241;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 10% 4%;
+    --sidebar-primary: 235 94% 66%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 10% 4%;
+    --sidebar-border: 240 6% 90%;
+    --sidebar-ring: 235 94% 66%;
 
-    /* Custom gradients for Julius.AI theme */
-    --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-    --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    /* Enhanced gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(235, 94%, 66%) 0%, hsl(235, 100%, 70%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(235, 94%, 60%) 0%, hsl(235, 94%, 66%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(235, 100%, 70%) 0%, hsl(235, 100%, 76%) 100%);
   }
 
   .dark {
-    --background: 15 23 42;
-    --foreground: 248 250 252;
+    --background: 240 10% 4%;
+    --foreground: 240 25% 98%;
 
-    --card: 30 41 59;
-    --card-foreground: 248 250 252;
+    --card: 240 10% 6%;
+    --card-foreground: 240 25% 98%;
 
-    --popover: 30 41 59;
-    --popover-foreground: 248 250 252;
+    --popover: 240 10% 6%;
+    --popover-foreground: 240 25% 98%;
 
-    --primary: 129 140 248;
-    --primary-foreground: 15 23 42;
+    --primary: 235 100% 70%;
+    --primary-foreground: 240 25% 98%;
 
-    --secondary: 51 65 85;
-    --secondary-foreground: 248 250 252;
+    --secondary: 240 10% 6%;
+    --secondary-foreground: 240 25% 98%;
 
-    --muted: 51 65 85;
-    --muted-foreground: 148 163 184;
+    --muted: 240 10% 6%;
+    --muted-foreground: 240 5% 65%;
 
-    --accent: 99 102 241;
-    --accent-foreground: 248 250 252;
+    --accent: 235 94% 66%;
+    --accent-foreground: 240 25% 98%;
 
-    --destructive: 239 68 68;
-    --destructive-foreground: 248 250 252;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 240 25% 98%;
 
-    --border: 51 65 85;
-    --input: 51 65 85;
-    --ring: 129 140 248;
+    --border: 240 10% 6%;
+    --input: 240 10% 6%;
+    --ring: 235 100% 70%;
 
-    --sidebar-background: 30 41 59;
-    --sidebar-foreground: 248 250 252;
-    --sidebar-primary: 129 140 248;
-    --sidebar-primary-foreground: 15 23 42;
-    --sidebar-accent: 51 65 85;
-    --sidebar-accent-foreground: 248 250 252;
-    --sidebar-border: 51 65 85;
-    --sidebar-ring: 129 140 248;
+    --sidebar-background: 240 10% 6%;
+    --sidebar-foreground: 240 25% 98%;
+    --sidebar-primary: 235 100% 70%;
+    --sidebar-primary-foreground: 240 25% 98%;
+    --sidebar-accent: 240 10% 6%;
+    --sidebar-accent-foreground: 240 25% 98%;
+    --sidebar-border: 240 10% 6%;
+    --sidebar-ring: 235 100% 70%;
   }
 }
 
+/* Force background color on all elements */
 @layer base {
-  * {
-    @apply border-border;
+  /* Reset all background colors first */
+  *, *::before, *::after {
+    background-color: transparent;
   }
 
+  /* Set the root background */
+  :root {
+    background-color: hsl(240, 25%, 98%) !important;
+  }
+
+  /* Force background on HTML and viewport */
   html {
-    background-color: white !important;
-  }
-
-  body {
-    @apply bg-white text-foreground font-sans;
-    background-color: white !important;
-  }
-
-  html, body, #root {
-    background-color: white !important;
+    background-color: hsl(240, 25%, 98%) !important;
     min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Force background on body */
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background-color: hsl(240, 25%, 98%) !important;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Force background on root element */
+  #root {
+    background-color: hsl(240, 25%, 98%) !important;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Ensure all main content areas have the correct background */
+  main, 
+  .bg-background,
+  [data-background="true"],
+  div[class*="bg-background"],
+  div[style*="background"],
+  div:not([class]):not([style]) {
+    background-color: hsl(240, 25%, 98%) !important;
+  }
+
+  /* Override any potential inline styles */
+  [style*="background"] {
+    background-color: hsl(240, 25%, 98%) !important;
+  }
+
+  /* Override any potential Tailwind classes */
+  .bg-background {
+    background-color: hsl(240, 25%, 98%) !important;
+  }
+
+  /* Override any potential theme colors */
+  [data-theme="light"] {
+    background-color: hsl(240, 25%, 98%) !important;
+  }
+
+  [data-theme="dark"] {
+    background-color: hsl(240, 10%, 4%) !important;
   }
 }
 
@@ -120,11 +172,15 @@
     background: var(--gradient-secondary);
   }
 
-  /* Animation utilities */
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  /* Enhanced animations */
   @keyframes fade-in {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(10px);
     }
     to {
       opacity: 1;
@@ -135,7 +191,7 @@
   @keyframes slide-up {
     from {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
@@ -146,7 +202,7 @@
   @keyframes scale-in {
     from {
       opacity: 0;
-      transform: scale(0.95);
+      transform: scale(0.98);
     }
     to {
       opacity: 1;
@@ -155,29 +211,30 @@
   }
 
   .animate-fade-in {
-    animation: fade-in 0.6s ease-out forwards;
+    animation: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .animate-slide-up {
-    animation: slide-up 0.5s ease-out forwards;
+    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .animate-scale-in {
-    animation: scale-in 0.4s ease-out forwards;
+    animation: scale-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
-  /* Interactive hover effects */
+  /* Enhanced hover effects */
   .hover-lift {
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .hover-lift:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   }
 
-  /* Smooth transitions for all interactive elements */
+  /* Smooth transitions */
   .transition-smooth {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }

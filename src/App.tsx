@@ -1,41 +1,78 @@
-
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { ThemeProvider } from "next-themes";
+import { Layout } from "@/components/Layout";
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Layout } from "./components/Layout";
-import Home from "./pages/Home";
-import Upload from "./pages/Upload";
-import Chat from "./pages/Chat";
-import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
+import { DataProvider } from "@/lib/DataContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
-const queryClient = new QueryClient();
+// Pages
+import SignIn from "@/pages/SignIn";
+import SignUp from "@/pages/SignUp";
+import Profile from "@/pages/Profile";
+import Upload from "@/pages/Upload";
+import Chat from "@/pages/Chat";
+import Dashboard from "@/pages/Dashboard";
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/upload" element={<Upload />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/chat/:datasetId" element={<Chat />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/:fileId" element={<Dashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/settings" element={<Profile />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+export default function App() {
+  return (
+    <ThemeProvider defaultTheme="system" enableSystem>
+      <Router>
+        <DataProvider>
+          <AuthProvider>
+            <div className="min-h-screen bg-background" data-background="true">
+              <Layout>
+                <Routes>
+                  {/* Public routes */}
+                  <Route path="/signin" element={<SignIn />} />
+                  <Route path="/signup" element={<SignUp />} />
+                  
+                  {/* Protected routes */}
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <Profile />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/upload"
+                    element={
+                      <ProtectedRoute>
+                        <Upload />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/chat"
+                    element={
+                      <ProtectedRoute>
+                        <Chat />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  
+                  {/* Redirect root to dashboard if authenticated, otherwise to signin */}
+                  <Route
+                    path="/"
+                    element={<Navigate to="/dashboard" replace />}
+                  />
+                </Routes>
+              </Layout>
+              <Toaster />
+            </div>
+          </AuthProvider>
+        </DataProvider>
+      </Router>
+    </ThemeProvider>
+  );
+}
