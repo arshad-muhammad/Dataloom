@@ -1,15 +1,20 @@
-
 import { useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Upload as UploadIcon, FileSpreadsheet, CheckCircle, AlertCircle } from "lucide-react";
+import { Upload as UploadIcon, FileSpreadsheet, CheckCircle, AlertCircle, Table } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
+import { uploadFile } from "@/lib/supabase";
+import { parseFile } from "@/lib/data-processing";
+import { useData } from "@/lib/DataContext";
 
 export default function Upload() {
   const [dragActive, setDragActive] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle');
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'processing' | 'success' | 'error'>('idle');
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { setCurrentDataset, setIsProcessing } = useData();
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -40,28 +45,97 @@ export default function Upload() {
   };
 
   const handleFile = async (file: File) => {
+    console.group('File Upload Debug');
+    console.log('File details:', {
+      name: file.name,
+      type: file.type,
+      size: file.size,
+      lastModified: new Date(file.lastModified).toISOString()
+    });
+    
     const allowedTypes = [
       'text/csv',
       'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'application/excel',
+      'application/x-excel',
+      'application/x-msexcel'
     ];
 
-    if (!allowedTypes.includes(file.type)) {
+    // Check both MIME type and file extension
+    const isValidExtension = /\.(csv|xlsx|xls)$/i.test(file.name);
+    const isValidType = allowedTypes.includes(file.type);
+
+    console.log('File validation:', {
+      isValidExtension,
+      isValidType,
+      allowedTypes,
+      fileType: file.type
+    });
+
+    if (!isValidType && !isValidExtension) {
+      console.warn('File validation failed');
+      console.groupEnd();
+      
       setUploadStatus('error');
+      toast({
+        title: "Invalid File Type",
+        description: `File type "${file.type}" is not supported. Please upload a CSV or Excel file (.csv, .xlsx, .xls)`,
+        variant: "destructive",
+      });
       return;
     }
 
-    setUploadedFile(file);
-    setUploadStatus('uploading');
+    try {
+      setUploadedFile(file);
+      setUploadStatus('uploading');
+      console.log('Starting file upload to Supabase...');
 
-    // Simulate upload process
-    setTimeout(() => {
+      // Upload to Supabase
+      const timestamp = Date.now();
+      const path = `uploads/${timestamp}`;
+      await uploadFile(file, path);
+      console.log('File uploaded to Supabase successfully');
+
+      // Parse and process the file
+      console.log('Starting file parsing...');
+      setUploadStatus('processing');
+      const datasetInfo = await parseFile(file);
+      console.log('File parsed successfully:', {
+        rowCount: datasetInfo.rowCount,
+        columns: datasetInfo.columns,
+        numericColumns: datasetInfo.summary.numericColumns,
+        categoricalColumns: datasetInfo.summary.categoricalColumns,
+        dateColumns: datasetInfo.summary.dateColumns
+      });
+      
+      // Store the dataset info in context
+      setCurrentDataset(datasetInfo);
+      
       setUploadStatus('success');
-    }, 2000);
+      console.log('File processing completed successfully');
+      console.groupEnd();
+
+      toast({
+        title: "File Processed Successfully",
+        description: `Processed ${datasetInfo.rowCount.toLocaleString()} rows of data.`,
+      });
+    } catch (error) {
+      console.error('File processing error:', error);
+      console.groupEnd();
+
+      setUploadStatus('error');
+      toast({
+        title: "Processing Error",
+        description: error instanceof Error ? error.message : "Failed to process the file. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const proceedToAnalysis = () => {
-    navigate('/chat/demo-dataset');
+    setIsProcessing(true);
+    navigate('/dashboard');
   };
 
   return (
@@ -111,7 +185,17 @@ export default function Upload() {
               <>
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
                 <h3 className="text-xl font-semibold mb-2">Uploading...</h3>
-                <p className="text-muted-foreground">Processing your file</p>
+                <p className="text-muted-foreground">Uploading your file</p>
+              </>
+            )}
+
+            {uploadStatus === 'processing' && (
+              <>
+                <div className="w-16 h-16 mx-auto mb-4">
+                  <Table className="w-full h-full text-primary animate-pulse" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Processing...</h3>
+                <p className="text-muted-foreground">Analyzing your data</p>
               </>
             )}
 

@@ -1,73 +1,112 @@
-# Welcome to your Lovable project
+# Dataloom 📊
 
-## Project info
+Dataloom is a powerful web-based data analysis and visualization platform that helps you transform raw data into meaningful insights. With an intuitive interface and robust features, Dataloom makes it easy to analyze, visualize, and share your data.
 
-**URL**: https://lovable.dev/projects/e54eeac0-eff0-4962-8df0-89aad8a06382
+## ✨ Features
 
-## How can I edit this code?
+### 📈 Dynamic Data Visualization
+- **Multiple Chart Types**: Create bar, line, and pie charts with ease
+- **Automatic Chart Generation**: Smart chart suggestions based on data types
+- **Interactive Customization**: Customize colors, labels, and chart properties
+- **Responsive Design**: Charts adapt seamlessly to different screen sizes
 
-There are several ways of editing your application.
+### 📊 Data Analysis
+- **Statistical Analysis**: View comprehensive statistics for your dataset
+- **Column Analysis**: Get insights about each column's data distribution
+- **Data Preview**: Quick view of your dataset with sortable columns
+- **Data Type Detection**: Automatic identification of numeric, categorical, and date columns
 
-**Use Lovable**
+### 📑 Report Generation
+- **One-Click Export**: Export your entire dashboard as a professional PDF report
+- **Multi-Page Support**: Automatic pagination for long reports
+- **High-Quality Output**: Crystal clear charts and tables in exported documents
+- **Branded Reports**: Professional header and consistent styling
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e54eeac0-eff0-4962-8df0-89aad8a06382) and start prompting.
+### 💬 Interactive Chat Interface
+- **Modern UI**: Clean and intuitive chat interface
+- **Smooth Scrolling**: Enhanced scroll behavior with proper overflow handling
+- **Visual Hierarchy**: Clear message styling and animations
+- **Responsive Design**: Adapts to different screen sizes
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Getting Started
 
-**Use your preferred IDE**
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/dataloom.git
+cd dataloom
 ```
 
-**Edit a file directly in GitHub**
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Start the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-**Use GitHub Codespaces**
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🛠️ Tech Stack
 
-## What technologies are used for this project?
+- **Frontend Framework**: Next.js with TypeScript
+- **Styling**: Tailwind CSS
+- **Charts**: Recharts
+- **PDF Generation**: html2canvas & jsPDF
+- **UI Components**: shadcn/ui
+- **State Management**: React Context
 
-This project is built with:
+## 📖 Usage
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Creating Charts
+1. Upload your dataset
+2. Navigate to the dashboard
+3. Click "Create Chart" button
+4. Choose chart type and customize options
+5. Your chart will appear in the dashboard
 
-## How can I deploy this project?
+### Exporting Reports
+1. Arrange your dashboard as desired
+2. Click "Export Report" button
+3. A PDF containing your entire dashboard will be downloaded
+4. The PDF includes all charts, statistics, and data previews
 
-Simply open [Lovable](https://lovable.dev/projects/e54eeac0-eff0-4962-8df0-89aad8a06382) and click on Share -> Publish.
+### Managing Data
+1. Upload data through the interface
+2. View automatic data analysis
+3. Create visualizations
+4. Export insights as needed
 
-## Can I connect a custom domain to my Lovable project?
+## 🤝 Contributing
 
-Yes, you can!
+We welcome contributions! Please feel free to submit a Pull Request.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Recharts](https://recharts.org/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [html2canvas](https://html2canvas.hertzen.com/)
+- [jsPDF](https://rawgit.com/MrRio/jsPDF/master/docs/)

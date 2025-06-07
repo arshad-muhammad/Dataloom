@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+ 
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+ 
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+ 
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+ 
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+ 
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+ 
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+ 
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Export mode styles */
+.export-mode {
+  width: 100% !important;
+  max-width: none !important;
+  background-color: white;
+  color: black;
+}
+
+.export-mode .animate-fade-in {
+  opacity: 1 !important;
+  animation: none !important;
+}
+
+.export-mode .bg-gradient-to-r {
+  background: none !important;
+  color: black !important;
+}
+
+.export-mode .bg-primary\/10 {
+  background-color: #f3f4f6 !important;
+}
+
+.export-mode .text-primary {
+  color: #1f2937 !important;
+}
+
+.export-mode .text-muted-foreground {
+  color: #4b5563 !important;
+}
+
+.export-mode .overflow-hidden {
+  overflow: visible !important;
+}
+
+.export-mode .h-\[600px\] {
+  height: auto !important;
+}
+
+.export-mode .max-h-screen {
+  max-height: none !important;
+}
+
+.export-mode .ScrollArea {
+  overflow: visible !important;
+  height: auto !important;
+}
+
+.export-mode .ScrollAreaViewport {
+  overflow: visible !important;
+  height: auto !important;
+}
+
+/* Ensure charts are visible */
+.export-mode .recharts-wrapper {
+  width: 100% !important;
+  height: 300px !important;
+}
+
+/* Hide scrollbars in export */
+.export-mode ::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Ensure proper spacing */
+.export-mode .space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 2rem !important;
+}
+
+.export-mode .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 1rem !important;
+}
+
+/* Ensure proper grid layout */
+.export-mode .grid {
+  display: grid !important;
+  grid-gap: 1.5rem !important;
+}
+
+/* Ensure proper card styling */
+.export-mode .card {
+  background-color: white !important;
+  border: 1px solid #e5e7eb !important;
+  break-inside: avoid !important;
+} 
