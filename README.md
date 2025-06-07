@@ -11,7 +11,11 @@ Dataloom is a powerful web-based data analysis and visualization platform that h
 - **Responsive Design**: Charts adapt seamlessly to different screen sizes
 
 ### 📊 Data Analysis
-- **Statistical Analysis**: View comprehensive statistics for your dataset
+- **Statistical Analysis**: 
+  - T-tests for comparing two groups
+  - One-way ANOVA for multiple group comparisons
+  - Intragroup analysis (mean, standard deviation, CV)
+  - Statistical significance testing (p < 0.05)
 - **Column Analysis**: Get insights about each column's data distribution
 - **Data Preview**: Quick view of your dataset with sortable columns
 - **Data Type Detection**: Automatic identification of numeric, categorical, and date columns
@@ -63,6 +67,7 @@ yarn dev
 - **Frontend Framework**: Next.js with TypeScript
 - **Styling**: Tailwind CSS
 - **Charts**: Recharts
+- **Statistical Analysis**: jStat
 - **PDF Generation**: html2canvas & jsPDF
 - **UI Components**: shadcn/ui
 - **State Management**: React Context
@@ -87,6 +92,16 @@ yarn dev
 2. View automatic data analysis
 3. Create visualizations
 4. Export insights as needed
+
+### Statistical Analysis
+1. Select a numeric column for analysis
+2. Choose a categorical column for grouping
+3. View automatically generated statistics:
+   - T-test results comparing groups
+   - ANOVA results for multiple group comparisons
+   - Detailed intragroup statistics
+   - Statistical significance indicators
+4. Use insights for data-driven decisions
 
 ## 🤝 Contributing
 
